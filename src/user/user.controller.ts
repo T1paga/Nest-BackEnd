@@ -12,11 +12,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-//import { User } from './decorators/user.decorator';
 import { UserService } from './user.service';
-//import { Auth } from 'src/auth/decorators/Auth.decorator';
 import { UpdateDto } from './dto/update.dto';
-//import { IdValidationPipe } from 'src/pipes/id.validation.pipe';
 import { UserModel } from './user.model';
 import { Types } from 'mongoose';
 import { Auth } from 'src/auth/decorators/auth.decorator';
@@ -41,21 +38,21 @@ export class UserController {
     return this.userService.updateProfile(_id, data);
   }
 
-  //   @Get('profile/favorites')
-  //   @Auth()
-  //   async getFavorites(@User('_id') _id: string) {
-  //     return this.userService.getFavoriteMovies(_id);
-  //   }
+  @Get('profile/favorites')
+  @Auth()
+  async getFavorites(@User('_id') _id: string) {
+    return this.userService.getFavoriteMovies(_id);
+  }
 
-  //   @Post('profile/favorites')
-  //   @HttpCode(200)
-  //   @Auth()
-  //   async toggleFavorite(
-  //     @Body('movieId', IdValidationPipe) movieId: Types.ObjectId,
-  //     @User() user: UserModel,
-  //   ) {
-  //     return this.userService.toggleFavorite(movieId, user);
-  //   }
+  @Post('profile/favorites')
+  @HttpCode(200)
+  @Auth()
+  async toggleFavorite(
+    @Body('movieId', IdValidationPipe) movieId: Types.ObjectId,
+    @User() user: UserModel,
+  ) {
+    return this.userService.toggleFavorite(movieId, user);
+  }
 
   @Get('count')
   @Auth('admin')

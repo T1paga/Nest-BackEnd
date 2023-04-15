@@ -14,13 +14,6 @@ export class UserService {
     @InjectModel(UserModel) private readonly userModel: ModelType<UserModel>,
   ) {}
 
-  //   async byId(id: string): Promise<DocumentType<UserModel>> {
-  //     const user = await this.userModel.findById(id).exec();
-
-  //     if (user) return user;
-  //     throw new NotFoundException('User not found');
-  //   }
-
   async byId(id: string): Promise<DocumentType<UserModel>> {
     const user = await this.userModel.findById(id).exec();
     if (user) return user;
@@ -50,30 +43,30 @@ export class UserService {
     throw new NotFoundException('User not found');
   }
 
-  //   async getFavoriteMovies(_id: string) {
-  //     return this.userModel
-  //       .findById(_id, 'favorites')
-  //       .populate({
-  //         path: 'favorites',
-  //         populate: {
-  //           path: 'genres',
-  //         },
-  //       })
-  //       .exec()
-  //       .then((data) => {
-  //         return data.favorites;
-  //       });
-  //   }
+  async getFavoriteMovies(_id: string) {
+    return this.userModel
+      .findById(_id, 'favorites')
+      .populate({
+        path: 'favorites',
+        populate: {
+          path: 'genres',
+        },
+      })
+      .exec()
+      .then((data) => {
+        return data.favorites;
+      });
+  }
 
-  //   async toggleFavorite(movieId: Types.ObjectId, user: UserModel) {
-  //     const { favorites, _id } = user;
+  async toggleFavorite(movieId: Types.ObjectId, user: UserModel) {
+    const { favorites, _id } = user;
 
-  //     await this.userModel.findByIdAndUpdate(_id, {
-  //       favorites: favorites.includes(movieId)
-  //         ? favorites.filter((id) => String(id) !== String(movieId))
-  //         : [...favorites, movieId],
-  //     });
-  //   }
+    await this.userModel.findByIdAndUpdate(_id, {
+      favorites: favorites.includes(movieId)
+        ? favorites.filter((id) => String(id) !== String(movieId))
+        : [...favorites, movieId],
+    });
+  }
 
   async getCount() {
     return this.userModel.find().count().exec();
