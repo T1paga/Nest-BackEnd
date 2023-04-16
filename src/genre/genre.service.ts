@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ModelType, DocumentType } from '@typegoose/typegoose/lib/types';
 import { Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
-//import { MovieService } from 'src/movie/movie.service';
+import { MovieService } from 'src/movie/movie.service';
 import { CreateGenreDto } from './dto/creacte-genre.dto';
 import { GenreModel } from './genre.model';
 import { ICollection } from './interfaces/genre.interface';
@@ -10,7 +10,8 @@ import { ICollection } from './interfaces/genre.interface';
 @Injectable()
 export class GenreService {
   constructor(
-    @InjectModel(GenreModel) private readonly genreModel: ModelType<GenreModel>, //private readonly movieService: MovieService,
+    @InjectModel(GenreModel) private readonly genreModel: ModelType<GenreModel>,
+    private readonly movieService: MovieService,
   ) {}
 
   async getAll(searchTerm?: string): Promise<DocumentType<GenreModel>[]> {
@@ -51,26 +52,26 @@ export class GenreService {
       .exec();
   }
 
-  //   async getCollections(): Promise<ICollection[]> {
-  //     const genres = await this.getAll();
+  async getCollections(): Promise<ICollection[]> {
+    const genres = await this.getAll();
 
-  //     const collections = await Promise.all(
-  //       genres.map(async (genre) => {
-  //         const moviesByGenre = await this.movieService.byGenres([genre._id]);
+    const collections = await Promise.all(
+      genres.map(async (genre) => {
+        const moviesByGenre = await this.movieService.byGenres([genre._id]);
 
-  //         const result: ICollection = {
-  //           _id: String(genre._id),
-  //           title: genre.name,
-  //           slug: genre.slug,
-  //           image: moviesByGenre[0].bigPoster,
-  //         };
+        const result: ICollection = {
+          _id: String(genre._id),
+          title: genre.name,
+          slug: genre.slug,
+          image: moviesByGenre[0].bigPoster,
+        };
 
-  //         return result;
-  //       }),
-  //     );
+        return result;
+      }),
+    );
 
-  //     return collections;
-  //   }
+    return collections;
+  }
 
   /* Admin area */
 

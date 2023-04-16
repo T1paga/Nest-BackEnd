@@ -37,10 +37,10 @@ export class GenreController {
     return this.genreService.getPopular();
   }
 
-  //   @Get('/collections')
-  //   async getCollections() {
-  //     return this.genreService.getCollections();
-  //   }
+  @Get('/collections')
+  async getCollections() {
+    return this.genreService.getCollections();
+  }
 
   @Get(':id')
   @Auth('admin')
