@@ -28,7 +28,7 @@ export class CreateMovieDto {
   title: string;
 
   @IsString()
-  description: string;
+  description?: string;
 
   @IsObject()
   parameters?: Parameter;

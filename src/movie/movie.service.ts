@@ -79,10 +79,10 @@ export class MovieService {
     id: string,
     dto: CreateMovieDto,
   ): Promise<DocumentType<MovieModel> | null> {
-    //  if (!dto.isSendTelegram) {
-    //    await this.sendNotifications(dto);
-    //    dto.isSendTelegram = true;
-    //  }
+    if (!dto.isSendTelegram) {
+      //await this.sendNotifications(dto);
+      dto.isSendTelegram = true;
+    }
 
     return this.movieModel.findByIdAndUpdate(id, dto, { new: true }).exec();
   }

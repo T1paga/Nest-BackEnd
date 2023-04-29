@@ -8,7 +8,7 @@ export class CreateGenreDto {
   slug: string;
 
   @IsString()
-  description: string;
+  description?: string;
 
   @IsString()
   icon: string;
